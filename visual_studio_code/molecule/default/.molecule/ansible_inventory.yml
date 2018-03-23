@@ -1,0 +1,17 @@
+# Molecule managed
+
+---
+all:
+  hosts:
+    visual_studio_code-centos: &id001
+      ansible_connection: docker
+    visual_studio_code-fedora: &id002
+      ansible_connection: docker
+    visual_studio_code-ubuntu: &id003
+      ansible_connection: docker
+ungrouped:
+  hosts:
+    visual_studio_code-centos: *id001
+    visual_studio_code-fedora: *id002
+    visual_studio_code-ubuntu: *id003
+  vars: {}

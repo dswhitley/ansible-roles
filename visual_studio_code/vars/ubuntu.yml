@@ -1,0 +1,9 @@
+---
+# Filename of Visual Studio Code redistributable package
+visual_studio_code_redis_filename: "code_{{ visual_studio_code_version }}_amd64.deb"
+
+install_extensions_dependencies:
+  - gconf2
+  - libasound2
+  - libgtk2.0-0
+  - libxss1

@@ -1,0 +1,7 @@
+---
+# CentOS specific filename of Visual Studio Code redistributable package
+visual_studio_code_redis_filename: "code_{{ visual_studio_code_version }}.el7.x86_64.rpm"
+
+install_extensions_dependencies:
+  - which
+#  - libX11-xcb # this is not required for CentOS..?
