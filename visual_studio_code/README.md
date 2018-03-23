@@ -7,6 +7,8 @@ Ansible Role: Visual Studio Code
 
 Role to install the [Visual Studio Code](https://code.visualstudio.com) IDE / text editor.
 
+First I forked https://github.com/gantsign/ansible-role-visual-studio-code in order to make it work across operating systems...and now I've just copied it into this new repo.
+
 Requirements
 ------------
 
