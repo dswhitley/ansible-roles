@@ -1,0 +1,7 @@
+---
+# defaults file for spideroak role, these are variables that are the same
+# regardless of distro
+
+spideroak_base_url: "https://spideroak.com/release/so.blue"
+spideroak_pkg_ver: "current"
+spideroak_config_dir: "/etc/SpiderOakBlue"

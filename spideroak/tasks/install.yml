@@ -1,0 +1,38 @@
+---
+# spideroak is installed by downloading a package and installing it
+
+# items that are the same regardless of distro are in defaults/main.yml
+# - spideroak_base_url
+# - spideroak_pkg_ver
+# - spideroak_config_dir
+
+- name: spideroak | combine variables into fact
+  set_fact:
+    spideroak_pkg: "{{ spideroak_pkg_ver }}.{{ spideroak_pkg_extension }}"
+
+- name: spideroak | download package
+  get_url:
+    url: "{{ spideroak_base_url }}/{{ spideroak_pkg_extension }}_x64"
+    dest: "/tmp/{{ spideroak_pkg }}"
+
+# unfortunately the "package" module does not work with .deb packages...
+- name: spideroak | install spideroak via download [ubuntu]
+  become: yes
+  apt:
+    deb: "/tmp/{{ spideroak_pkg }}"
+  register: pkg_install
+  when: ansible_distro == "ubuntu"
+
+- name: spideroak | install spideroak via download [!ubuntu]
+  become: yes
+  package:
+    name: "/tmp/{{ spideroak_pkg }}"
+    state: present
+  register: pkg_install
+  when: ansible_distro != "ubuntu"
+
+#- name: spideroak | remove the downloaded package
+#  file:
+#    path: "/tmp/{{ spideroak_pkg }}"
+#    state: absent
+#  when: pkg_install is successful
