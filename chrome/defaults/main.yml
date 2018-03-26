@@ -1,0 +1,7 @@
+---
+# defaults file for chrome role, these are variables that are the same
+# regardless of distro
+
+chrome_repo_pkg_url: "https://dl.google.com/linux/direct"
+chrome_repo_pkg_ver: "current"
+chrome_repo_pkg_basename: "google-chrome-stable"

@@ -1,0 +1,30 @@
+---
+# chrome is installed via a repository for either ubuntu or fedora.  that repo
+# is installed with a package for each distro
+
+# items that are the same regardless of distro are in defaults/main.yml
+# - chrome_repo_pkg_url
+# - chrome_repo_pkg_basename
+
+- name: chrome | combine variables into fact
+  set_fact:
+    chrome_repo_pkg: "{{ chrome_repo_pkg_basename }}_{{ chrome_repo_pkg_ver }}_{{ chrome_repo_pkg_extension }}"
+
+- name: chrome | download repository package
+  get_url:
+    url: "{{ chrome_repo_pkg_url }}/{{ chrome_repo_pkg }}"
+    dest: "/tmp/{{ chrome_repo_pkg }}"
+
+# unfortunately the "package" module does not work with .deb packages...
+- name: chrome | configure the repo and install chrome via download [ubuntu]
+  become: yes
+  apt:
+    deb: "/tmp/{{ chrome_repo_pkg }}"
+  when: ansible_distro == "ubuntu"
+
+- name: chrome | configure the repo and install chrome via download [!ubuntu]
+  become: yes
+  package:
+    name: "/tmp/{{ chrome_repo_pkg }}"
+    state: present
+  when: ansible_distro != "ubuntu"

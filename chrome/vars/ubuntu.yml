@@ -1,0 +1,3 @@
+---
+# ubuntu specific vars file for chrome role
+chrome_repo_pkg_extension: "amd64.deb"
