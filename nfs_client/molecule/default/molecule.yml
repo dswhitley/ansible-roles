@@ -9,11 +9,11 @@ lint:
   name: yamllint
 
 platforms:
-  - name: visual_studio_code-ubuntu
+  - name: ubuntu16
     image: ubuntu:16.04
-  - name: visual_studio_code-fedora
+  - name: fedora27
     image: fedora:27
-  - name: visual_studio_code-centos
+  - name: centos7
     image: centos:7
 
 provisioner:
