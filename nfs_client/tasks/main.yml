@@ -22,6 +22,6 @@
 
 - include_tasks: install.yml
 
-- include_tasks: install-extensions.yml
-
-- include_tasks: write-settings.yml
+- name: configure mounts if they are specified
+  include_tasks: configure_mounts.yml
+  when: mounts is defined
