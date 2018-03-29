@@ -1,0 +1,4 @@
+---
+# ubuntu specific vars file for nfs_client role
+nfs_client_pkg: nfs-client
+nfs_client_svc: rpcbind
