@@ -1,0 +1,14 @@
+---
+# the packages required for nfs_client will be installed from their respective 
+# OS repositories.
+
+- name: install latest nfs package
+  package:
+    name: "{{ nfs_client_pkg }}"
+    state: present
+
+- name: ensure nfs service is started and enabled
+  service:
+    name: "{{ nfs_client_svc }}"
+    state: started
+    enabled: yes
