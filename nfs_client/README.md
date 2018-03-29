@@ -1,19 +1,17 @@
-Ansible Role: Visual Studio Code
-================================
+Ansible Role: nfs_client
+========================
 
 [![Build Status](https://travis-ci.org/gantsign/ansible-role-visual-studio-code.svg?branch=master)](https://travis-ci.org/gantsign/ansible-role-visual-studio-code)
 [![Ansible Galaxy](https://img.shields.io/badge/ansible--galaxy-gantsign.visual--studio--code-blue.svg)](https://galaxy.ansible.com/gantsign/visual-studio-code)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/gantsign/ansible-role-visual-studio-code/master/LICENSE)
 
-Role to install the [Visual Studio Code](https://code.visualstudio.com) IDE / text editor.
-
-First I forked https://github.com/gantsign/ansible-role-visual-studio-code in order to make it work across operating systems...and now I've just copied it into this new repo.
+Role to install the packages necessary for a system to be an NFS client as well
+as create a few mounts if specified.
 
 Requirements
 ------------
 
 * Ansible >= 2.3 (earlier versions may work but are not tested)
-* Ubuntu
 
 Role Variables
 --------------
@@ -22,91 +20,25 @@ The following variables will change the behavior of this role (default values
 are shown below):
 
 ```yaml
-# Visual Studio Code version number
-visual_studio_code_version: '1.20.1'
-
-# Directory to store files downloaded for Visual Studio Code installation
-visual_studio_code_download_dir: "{{ x_ansible_download_dir | default(ansible_env.HOME + '/.ansible/tmp/downloads') }}"
-
-# Users to install extensions for and/or write settings.json
-users: []
+N/A
 ```
 
 Mounts are configured as follows:
 
 ```yaml
 mounts:
-  - username: "{{ new_user | default( ansible_user_id ) }}"
-    home_link: "yes"
-    mount:
-      - { src: 1.2.3.4:/share1, dest: /nfs/share1 }
-      - { src: 1.2.3.4:/share2, dest: /nfs/anothershare }
+  - { src: 1.2.3.4:/share1, dest: /nfs/share1 }
+  - { src: 1.2.3.4:/share2, dest: /nfs/anothershare }
 ```
 
-### Supported Visual Studio Code Versions
 
-The following versions of Visual Studio Code are supported without any
-additional configuration (for other versions follow the Advanced Configuration
-instructions):
-
-* `1.20.1`
-* `1.20`
-* `1.19.3`
-* `1.19.2`
-* `1.19.1`
-* `1.19`
-* `1.18.1`
-* `1.18`
-* `1.17.2`
-* `1.16.1`
-* `1.16`
-* Version `1.15.x` is not supported due to [vscode/32381](https://github.com/Microsoft/vscode/issues/32381).
-* `1.14.2`
-* `1.14.1`
-* `1.14`
-* `1.13.1`
-* `1.13`
-* `1.12.2`
-* `1.12.1`
-* `1.12`
-* `1.11.2`
-* `1.11.1`
-* `1.11`
-* `1.10.2`
-* `1.10.1`
-* `1.10`
-* `1.9.1`
-* `1.9`
-* `1.8.1`
-* `1.8`
-* `1.7.2`
-* `1.7.1`
-* `1.7`
-* `1.6.1`
-* `1.6`
-* `1.5.3`
-* `1.5.2`
-* `1.5.1`
-* `1.5`
-* `1.4`
-* `1.3.1`
-* `1.3`
 
 Advanced Configuration
 ----------------------
 
-The following role variables are dependent on the Visual Studio Code version;
-to use a Visual Studio Code version **not pre-configured by this role** you
-must configure the variables below:
-
-```yaml
-# SHA256 sum for the redistributable package (e.g code_1.3.0-1467909982_amd64.deb)
-visual_studio_code_redis_sha256sum: '53eb2cd235b395a28e7fda6f50f904fd5665877e354609f836a6b60a1592c9c9'
-
-# The download URL for the redistributable package
-# Permanent download URLs can be found on https://code.visualstudio.com/Updates
-visual_studio_code_redis_url: 'https://az764295.vo.msecnd.net/stable/e724f269ded347b49fcf1657fc576399354e6703/code_1.3.0-1467909982_amd64.deb'
-```
+You can specify users who should have a soft link in their home directory 
+pointing to the new mounted share.  Simply specify a list of users in 
+`home_link` 
 
 Example Playbooks
 -----------------
@@ -122,22 +54,24 @@ Minimal playbook:
 Playbook with extensions installed:
 
 ```yaml
-- hosts: servers
+- hosts: localhost
+  connection: local
   roles:
     - role: dswhitley.nfs_client
       mounts:
-        - username: "{{ new_user | default( ansible_user_id ) }}"
-          home_link: "yes"
-          mount:
-            - { src: 1.2.3.4:/share1, dest: /nfs/share1 }
-            - { src: 1.2.3.4:/share2, dest: /nfs/anothershare }
+        - { src: "1.2.3.4:/share1", dest: "/nfs/share1" }
+        - { src: "1.2.3.4:/share2", dest: "/nfs/anothershare" }
+        - { src: "1.2.3.4:/share3", dest: "/nfs/anothershare2" }
+      home_link:
+        - "{{ new_user | default( ansible_user_id ) }}"
+        - anotheruser
 ```
 
-More Roles From GantSign
-------------------------
+More Roles From dswhitley
+-------------------------
 
-You can find more roles from GantSign on
-[Ansible Galaxy](https://galaxy.ansible.com/gantsign).
+You can find more roles in my 
+[ansible-roles](https://github.com/dswhitley/ansible-roles) repository.
 
 Development & Testing
 ---------------------
@@ -146,6 +80,10 @@ This project uses [Molecule](http://molecule.readthedocs.io/) to aid in the
 development and testing; the role is unit tested using
 [Testinfra](http://testinfra.readthedocs.io/) and
 [pytest](http://docs.pytest.org/).
+
+This particular role is hard to test if mounts are passed during invocation.  
+Therefore, the testing that has been done is focused on installing the correct 
+packages and ensuring the correct services are started.
 
 To develop or test you'll need to have installed the following:
 
@@ -171,7 +109,4 @@ MIT
 Author Information
 ------------------
 
-John Freeman
-
-GantSign Ltd.
-Company No. 06109112 (registered in England)
+Daniel Whitley
