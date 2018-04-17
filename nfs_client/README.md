@@ -85,6 +85,11 @@ This particular role is hard to test if mounts are passed during invocation.
 Therefore, the testing that has been done is focused on installing the correct 
 packages and ensuring the correct services are started.
 
+ADDITIONALLY: containers don't inherently have use systemd so testing services
+that use systemd are troublesome.  [This](https://medium.com/@tklo/testing-ansible-role-of-a-systemd-based-service-using-molecule-and-docker-4b3608a10ef0)
+page should help, it is what I've used to test CentOS and Fedora containers and
+this role...but it is still failing for Ubuntu.  Ship it.
+
 To develop or test you'll need to have installed the following:
 
 * Linux (e.g. [Ubuntu](http://www.ubuntu.com/))
