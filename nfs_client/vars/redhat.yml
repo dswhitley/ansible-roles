@@ -1,0 +1,5 @@
+---
+# redhat specific vars file for nfs_client role (fedora + cent report as redhat)
+nfs_client_pkgs:
+  - nfs-utils
+  - rpcbind
