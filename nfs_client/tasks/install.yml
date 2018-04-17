@@ -1,14 +1,14 @@
 ---
-# the packages required for nfs_client will be installed from their respective 
+# the packages required for nfs_client will be installed from their respective
 # OS repositories.
 
-- name: install latest nfs package
+- name: install | install latest nfs packages
   package:
-    name: "{{ nfs_client_pkg }}"
+    name: "{{ nfs_client_pkgs }}"
     state: present
 
-- name: ensure nfs service is started and enabled
+- name: install | ensure rpcbind is started and enabled
   service:
-    name: "{{ nfs_client_svc }}"
+    name: "rpcbind"
     state: started
     enabled: yes

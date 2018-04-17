@@ -23,5 +23,5 @@
 - include_tasks: install.yml
 
 - name: configure mounts if they are specified
-  include_tasks: configure_mounts.yml
+  include_tasks: configure.yml
   when: mounts is defined
