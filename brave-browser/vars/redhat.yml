@@ -1,0 +1,5 @@
+---
+# Red Hat (when captured via ansible_os_family includes Fedora and CentOS)
+# specific variables
+brave_yum_baseurl: https://s3-us-west-2.amazonaws.com/brave-rpm-release/x86_64/
+brave_yum_gpgkey: https://s3-us-west-2.amazonaws.com/brave-rpm-release/keys.asc

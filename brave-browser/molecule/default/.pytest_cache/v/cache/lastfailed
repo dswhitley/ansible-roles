@@ -1,0 +1,4 @@
+{
+  "tests/test_default.py": true, 
+  "tests/test_install.py": true
+}
