@@ -1,0 +1,60 @@
+---
+# there is no repo but we can install the latest version without specifying
+
+# these variables are global in vars/global.yml
+# - rocket_latest_url
+
+- name: install| find where "latest" sends us
+  uri:
+    url: "{{ rocket_base_url }}/latest"
+    return_content: true
+    follow_redirects: none
+    status_code: 200,302
+  register: latest_page
+
+- name: install| set latest_ver variable
+  set_fact:
+    latest_ver: "{{ latest_page.content.split('\"')[1] | basename }}"
+- name: install| set the latest_ver_dl_url variable
+  set_fact:
+    latest_ver_dl_url: "{{ rocket_base_url }}/download/{{ latest_ver }}"
+
+- name: install| do these tasks for RedHat-y systems
+  block:
+    - name: install|rpm| set the pkg_name variable
+      set_fact:
+        pkg_name: "rocketchat-{{ latest_ver }}.x86_64.rpm"
+    - name: install|rpm| download the package
+      get_url:
+        url: "{{ latest_ver_dl_url }}/{{ pkg_name }}"
+        dest: /tmp/
+    - name: install|rpm| install the package
+      become: true
+      package:
+        name: /tmp/{{ pkg_name }}
+        state: present
+      register: pkg_install
+  when: ansible_os_family == "RedHat"
+
+- name: install| do these tasks for Ubuntu systems
+  block:
+    - name: install|deb| set the pkg_name variable
+      set_fact:
+        pkg_name: "rocketchat_{{ latest_ver }}_amd64.deb"
+    - name: install|deb| download the package
+      get_url:
+        url: "{{ latest_ver_dl_url }}/{{ pkg_name }}"
+        dest: /tmp/
+    - name: install|deb| install the package
+      become: true
+      apt:
+        deb: /tmp/{{ pkg_name }}
+        state: present
+      register: pkg_install
+  when: ansible_distro == "ubuntu"
+
+# - name: install| remove the downloaded package
+#   file:
+#     name: /tmp/{{ pkg_name }}
+#     state: absent
+#   when: pkg_install is succeeded
