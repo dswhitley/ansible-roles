@@ -5,29 +5,6 @@
 # these variables are global in vars/default.yml
 # - slack_base_url
 
-- name: install| assert version is specified
-  assert:
-    that:
-      - "slack_version not in (None, '')"
-
-# - name: install|latest| if no version is passed, use latest
-#   block:
-#     - name: install| find where "latest" sends us
-#       uri:
-#         url: "{{ rambox_base_url }}/latest"
-#         return_content: true
-#         follow_redirects: none
-#         status_code: 200,302
-#       register: latest_page
-#     - name: install|latest| set rambox_version variable
-#       set_fact:
-#         rambox_version: "{{ latest_page.content.split('\"')[1] | basename }}"
-#   when: rambox_version is undefined
-
-# - name: install| set the latest_ver_dl_url variable
-#   set_fact:
-#     rambox_dl_url: "{{ rambox_base_url }}/download/{{ rambox_version }}"
-
 - name: install| do these tasks for RedHat-y systems
   block:
     - name: install|rpm| set the slack_pkg variable
