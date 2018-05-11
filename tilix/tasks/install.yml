@@ -1,0 +1,27 @@
+---
+# tilix is installed via a repo for either ubuntu or fedora
+
+- name: do these tasks for Red Hat or CentOS systems
+  block:
+    - name: install|rpm| download the copr repo
+      become: true
+      get_url:
+        url: https://copr.fedorainfracloud.org/coprs/ivoarch/Tilix/repo/epel-7/ivoarch-Tilix-epel-7.repo
+        dest: /etc/yum.repos.d/
+  when: ansible_distro == "redhat" or
+        ansible_distro == "centos"
+
+- name: do these tasks for Ubuntu systems
+  block:
+    - name: install|deb| add the apt repository
+      become: true
+      apt_repository:
+        repo: ppa:webupd8team/terminix
+        state: present
+  when: ansible_distro == "ubuntu"
+
+- name: install| install tilix from repo
+  become: true
+  package:
+    name: tilix
+    state: present
