@@ -1,0 +1,6 @@
+---
+# these are variables shared across all distros
+slack_base_url: https://downloads.slack-edge.com/linux_releases
+slack_version: 3.1.1
+# the beta versions include some sort of hash so it may be easist to pick the
+# prior version from: https://slack.com/release-notes/linux

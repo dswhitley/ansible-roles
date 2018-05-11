@@ -1,0 +1,61 @@
+---
+# there is no repo and finding latest is not possible, so it must be updated in
+# the vars/default.yml file...
+
+# these variables are global in vars/default.yml
+# - slack_base_url
+
+- name: install| assert version is specified
+  assert:
+    that:
+      - "slack_version not in (None, '')"
+
+# - name: install|latest| if no version is passed, use latest
+#   block:
+#     - name: install| find where "latest" sends us
+#       uri:
+#         url: "{{ rambox_base_url }}/latest"
+#         return_content: true
+#         follow_redirects: none
+#         status_code: 200,302
+#       register: latest_page
+#     - name: install|latest| set rambox_version variable
+#       set_fact:
+#         rambox_version: "{{ latest_page.content.split('\"')[1] | basename }}"
+#   when: rambox_version is undefined
+
+# - name: install| set the latest_ver_dl_url variable
+#   set_fact:
+#     rambox_dl_url: "{{ rambox_base_url }}/download/{{ rambox_version }}"
+
+- name: install| do these tasks for RedHat-y systems
+  block:
+    - name: install|rpm| set the slack_pkg variable
+      set_fact:
+        slack_pkg: "slack-{{ slack_version }}-0.1.fc21.x86_64.rpm"
+    - name: install|rpm| download the package
+      get_url:
+        url: "{{ slack_base_url }}/{{ slack_pkg }}"
+        dest: /tmp/
+    - name: install|rpm| install the package
+      become: true
+      package:
+        name: /tmp/{{ slack_pkg }}
+        state: present
+  when: ansible_os_family == "RedHat"
+
+- name: install| do these tasks for Ubuntu systems
+  block:
+    - name: install|deb| set the slack_pkg variable
+      set_fact:
+        slack_pkg: "slack-desktop-{{ slack_version }}-amd64.deb"
+    - name: install|deb| download the package
+      get_url:
+        url: "{{ slack_base_url }}/{{ slack_pkg }}"
+        dest: /tmp/
+    - name: install|deb| install the package
+      become: true
+      apt:
+        deb: /tmp/{{ slack_pkg }}
+        state: present
+  when: ansible_distro == "ubuntu"
