@@ -1,10 +1,14 @@
 Ansible Role: ScudCloud
 ================================
 
+**UPDATE**  *There is no repository for CentOS or RHEL and so I'd have to build
+it for those, which eliminates the advantage over Slack of having a repository.
+So now I am going to abandon this [2018-05-11] and install the Slack client...*
+
 Role to install [ScudCloud](https://github.com/raelgc/scudcloud) which is an
 **non-official** open source Slack client.  There is a Linux client for Slack,
 but it is perpetually in *beta* and there is no repository for installation.
-ScudCloud is installed via a repository and therefore updated similarly so the 
+ScudCloud is installed via a repository and therefore updated similarly so the
 exact version does not need to be specified.
 
 Requirements

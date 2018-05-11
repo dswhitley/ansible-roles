@@ -1,39 +1,8 @@
 ---
 # scudcloud client is installed via a repo for either ubuntu or fedora
 
-# variables are included based on distro (per main.yml) in vars/distro.yml
-# - brave_yum_repo
-# - brave_yum_gpgkey
-# - brave_apt_key
-# - brave_apt_repourl
-
-# - name: do these tasks for RedHat-y systems
-#   block:
-#     - name: install|rpm| add the repository
-#       become: true
-#       yum_repository:
-#         name: brave-browser
-#         description: Brave browser
-#         baseurl: "{{ brave_yum_baseurl }}"
-#         enabled: yes
-#         gpgcheck: yes
-#         gpgkey: "{{ brave_yum_gpgkey }}"
-#         skip_if_unavailable: yes
-#   when: ansible_os_family == "RedHat"
-
 - name: do these tasks for Ubuntu systems
   block:
-    # - name: install|deb| install the https method driver for apt
-    #   become: true
-    #   apt:
-    #     name: apt-transport-https
-    #     state: present
-    #     update_cache: yes
-    # - name: install|deb| add the apt key
-    #   become: true
-    #   apt_key:
-    #     url: "{{ brave_apt_key }}"
-    #     state: present
     - name: install|deb| add the apt repository
       become: true
       apt_repository:
