@@ -1,0 +1,4 @@
+---
+# Ubuntu specific variables
+brave_apt_key: https://s3-us-west-2.amazonaws.com/brave-apt/keys.asc
+brave_apt_repourl: https://s3-us-west-2.amazonaws.com/brave-apt
