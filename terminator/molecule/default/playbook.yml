@@ -1,0 +1,22 @@
+---
+- name: Converge
+  hosts: all
+
+  pre_tasks:
+    - name: create test users
+      become: yes
+      user:
+        name: '{{ item }}'
+        state: present
+        home: '/home/{{ item }}'
+        createhome: yes
+      with_items:
+        - test_usr1
+        - test_usr2
+
+  roles:
+    - role: terminator
+      users:
+        - username: test_usr1
+          terminator_config_file: "terminator.config"
+        - username: test_usr2

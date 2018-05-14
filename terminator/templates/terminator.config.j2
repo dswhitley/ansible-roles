@@ -1,0 +1,29 @@
+[global_config]
+  enabled_plugins = {{ global_config_enabled_plugins|default(omit) }}
+  title_hide_sizetext = {{ terminator_configs.global_config_title_hide_sizetext|default(omit) }}
+  title_transmit_bg_color = {{ global_config_title_transmit_bg_color|default(omit) }}
+  title_use_system_font = {{ global_config_title_use_system_font|default(omit) }}
+[keybindings]
+[layouts]
+  [[default]]
+    [[[child1]]]
+      parent = window0
+      type = Terminal
+    [[[window0]]]
+      parent = ""
+      size = {{ layouts_default_window0_size|default(omit) }}
+      type = Window
+[plugins]
+[profiles]
+  [[default]]
+    background_color = {{ profiles_default_background_color|default(omit) }}
+    background_darkness = {{ profiles_default_background_darkness|default(omit) }}
+    background_type = {{ profiles_default_background_type|default(omit) }}
+    copy_on_selection = {{ profiles_default_copy_on_selection|default(omit) }}
+    cursor_color = {{ profiles_default_cursor_color|default(omit) }}
+    font = {{ profiles_default_font|default(omit) }}
+    foreground_color = {{ profiles_default_foreground_color|default(omit) }}
+    palette = {{ profiles_default_palette|default(omit) }}
+    scrollback_infinite = {{ profiles_default_scrollback_infinite|default(omit) }}
+    use_system_font = {{ profiles_default_use_system_font|default(omit) }}
+    visible_bell = {{ profiles_default_visible_bell|default(True) }}

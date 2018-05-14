@@ -1,0 +1,28 @@
+---
+# terminator is installed via a repo for either ubuntu or fedora.  for RHEL or
+# CentOS, we must ensure the EPEL repo is being used
+
+- name: do these tasks for Red Hat or CentOS systems
+  block:
+    - name: install|rpm| configure EPEL for RHEL and Cent
+      become: true
+      package:
+        name: epel-release
+        state: present
+  when: ansible_distro == "redhat" or
+        ansible_distro == "centos"
+
+- name: do these tasks for Ubuntu systems
+  block:
+    - name: install|deb| add the apt repository
+      become: true
+      apt_repository:
+        repo: ppa:gnome-terminator
+        state: present
+  when: ansible_distro == "ubuntu"
+
+- name: install| install terminator from repo
+  become: true
+  package:
+    name: terminator
+    state: present

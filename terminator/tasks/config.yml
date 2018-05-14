@@ -1,0 +1,24 @@
+---
+- name: config| create settings directory
+  become: yes
+  file:
+    path: "~{{ item.username }}/.config/terminator"
+    state: directory
+    owner: "{{ item.username }}"
+    group: "{{ item.username }}"
+    mode: "u=rwx,go="
+  with_items: "{{ users }}"
+
+# terminator settings are written in an ini format, which is an informal
+# standard which makes modifying a settings file basically impossible.  so I
+# will just copy a file that I user personally...
+- name: config| copy a generally acceptable config file for everyone
+  become: yes
+  copy:
+    src: "terminator.config"
+    dest: "~{{ item.username }}/.config/terminator/config"
+    force: no
+    owner: "{{ item.username }}"
+    group: "{{ item.username }}"
+    mode: "u=rw,go="
+  with_items: "{{ users }}"
