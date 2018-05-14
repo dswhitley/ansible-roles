@@ -1,0 +1,19 @@
+---
+- name: config| get the dconf profile id for each user
+  become: yes
+  become_user: "{{ item }}"
+  dconf:
+    key: /com/gexperts/Tilix/profiles/list
+    state: read
+  register: tilix_dconf_profile
+  loop: "{{ users.username }}"
+
+- name: config| set each configuration for each user
+  become: yes
+  become_user: "{{ item.0.username }}"
+  dconf:
+    key: "{{ item.1.key }}"
+    value: "{{ item.1.value }}"
+  with_subelements:
+    - "{{ users }}"
+    - tilix_settings
