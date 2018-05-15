@@ -1,0 +1,42 @@
+---
+# not really installing anything, but you get the point...
+- name: install| look for {{ new_user }}
+  getent:
+    database: passwd
+    key: "{{ new_user }}"
+    fail_key: false
+
+- name: install| add local user {{ new_user }}
+  become: true
+  user:
+    name: "{{ new_user }}"
+    password: "{{ new_user |password_hash('sha512') }}"
+    comment: "{{ new_user }}"
+    uid: 1000
+    expires: 1514764800
+    update_password: on_create
+  when: getent_passwd[new_user] == none
+
+# - name: install| expire the {{ new_user }} password
+#   become: true
+#   shell: chage -d 0 "{{ new_user }}"
+
+- name: install| grant {{ new_user }} sudo access
+  become: true
+  lineinfile:
+    path: /etc/sudoers.d/{{ new_user }}
+    state: present
+    create: yes
+    regexp: '{{ new_user }}'
+    line: '{{ new_user }} ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
+  when: getent_passwd[new_user] == none
+
+- name: install| create GIT directory
+  become: true
+  file:
+    name: /home/{{new_user}}/GIT
+    state: directory
+    owner: '{{ new_user }}'
+    group: '{{ new_user }}'
+    mode: 'u=rwx,go='
