@@ -1,0 +1,65 @@
+---
+# docker is installed via a repo for either ubuntu, CentOS, or fedora.  for RHEL
+# we need to modify subscriptions? or use the EE something?
+- name: install| remove all potential old versions
+  become: true
+  package:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - docker
+    - docker-engine
+    - docker.io
+    - docker-client
+    - docker-client-latest
+    - docker-common
+    - docker-latest
+    - docker-latest-logrotate
+    - docker-logrotate
+    - docker-selinux
+    - docker-engine-selinux
+    - docker-engine
+
+# https://docs.docker.com/install/linux/docker-ce/fedora/
+# https://docs.docker.com/install/linux/docker-ce/centos/
+- name: do these tasks for Fedora or CentOS systems
+  block:
+    - name: install|rpm| configure repo for Fedora or CentOS
+      become: true
+      get_url:
+        url: https://download.docker.com/linux/{{ ansible_distro }}/docker-ce.repo
+        dest: /etc/yum.repos.d/
+  when: ansible_distro == "fedora" or
+        ansible_distro == "centos"
+
+# https://docs.docker.com/install/linux/docker-ce/ubuntu/
+- name: do these tasks for Ubuntu systems
+  block:
+    - name: install|deb| allow apt to use https
+      become: true
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - apt-transport-https
+        - ca-certificates
+        - software-properties-common
+    - name: install|deb| add the apt key
+      become: true
+      apt_key:
+        url: "https://download.docker.com/linux/ubuntu/gpg"
+        state: present
+    - name: install|deb| add the apt repository
+      become: true
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu
+              {{ ansible_lsb.codename }} stable
+        state: present
+  when: ansible_distro == "ubuntu" and
+        ansible_distribution_version >= 14.04
+
+- name: install| install docker from repo
+  become: true
+  package:
+    name: docker-ce
+    state: present

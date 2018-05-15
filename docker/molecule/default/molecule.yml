@@ -1,0 +1,38 @@
+---
+dependency:
+  name: galaxy
+
+driver:
+  name: vagrant
+
+lint:
+  name: yamllint
+
+vagrant:
+  platforms:
+    - name: ubuntu
+      box: generic/ubuntu1604
+    - name: fedora27
+      box: generic/fedora27
+    - name: centos7
+      box: centos/7
+  providers:
+    - name: libvirt
+      type: libvirt
+      options:
+        memory: 512
+        cpus: 1
+      driver: kvm
+
+provisioner:
+  name: ansible
+  lint:
+    name: ansible-lint
+
+scenario:
+  name: default
+
+verifier:
+  name: testinfra
+  lint:
+    name: flake8

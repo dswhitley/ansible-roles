@@ -1,0 +1,18 @@
+---
+- name: config| start and enable the docker service
+  become: yes
+  service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: config| ensure docker group exists
+  group:
+    name: docker
+    state: present
+
+- name: config| add unpriviliged user to docker group
+  user:
+    name: "{{ new_user | default( ansible_user_id ) }}"
+    groups: docker
+    append: yes
