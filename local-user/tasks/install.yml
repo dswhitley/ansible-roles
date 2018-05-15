@@ -13,13 +13,14 @@
     password: "{{ new_user |password_hash('sha512') }}"
     comment: "{{ new_user }}"
     uid: 1000
-    expires: 1514764800
+#    expires: 1514764800
     update_password: on_create
   when: getent_passwd[new_user] == none
 
-# - name: install| expire the {{ new_user }} password
-#   become: true
-#   shell: chage -d 0 "{{ new_user }}"
+- name: install| expire the {{ new_user }} password
+  become: true
+  shell: chage -d 0 "{{ new_user }}"
+  when: getent_passwd[new_user] == none
 
 - name: install| grant {{ new_user }} sudo access
   become: true
