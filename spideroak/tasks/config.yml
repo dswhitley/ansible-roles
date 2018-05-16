@@ -1,0 +1,31 @@
+---
+# apply some pretty generic configurations
+
+- name: config| assign spideroak_config_dir variable
+  set_fact:
+    spideroak_config_dir: "/etc/SpiderOak Groups"
+
+- name: config| create config directory
+  become: yes
+  file:
+    path: "{{ spideroak_config_dir }}"
+    state: directory
+
+- name: config| copy over generic defaults
+  copy:
+    src: spideroak_{{ item }}
+    dest: "{{ spideroak_config_dir }}/{{ item }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - BackupSet
+    - Defaults
+    - Preferences
+
+- name: config| print hints
+  debug:
+    msg: "In order to log in to SpiderOak, use Kerberos name and token passcode"
+  # and if I ever capture token passcode (for example, to log into VPN), then
+  # I can use a setup template file and the command line:
+  # https://support.spideroak.com/hc/en-us/articles/115001891563-Command-Line-Options-in-the-Groups-Application

@@ -1,0 +1,7 @@
+{
+    "LimitBandwidthEnabled" : true,
+    "LimitUploadBucket" : "500",
+    "LaunchMinimizedAtStartup" : true,
+    "ShowCloseOrMinimizeDialogOnClose" : false,
+    "ShowSplashScreenAtStartup" : false
+}
