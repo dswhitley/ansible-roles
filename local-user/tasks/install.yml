@@ -38,8 +38,11 @@
 - name: install| create GIT directory
   become: true
   file:
-    name: /home/{{new_user}}/GIT
+    name: /home/{{new_user}}/{{ item }}
     state: directory
     owner: '{{ new_user }}'
     group: '{{ new_user }}'
     mode: 'u=rwx,go='
+  with_items:
+    - "GIT"
+    - "BACKUP"
