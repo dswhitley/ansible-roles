@@ -50,6 +50,10 @@
           deltarpm=true
       tags: packages
 
+    - name: install|rh| change hostname
+      hostname:
+        name: "{{ ansible_distro }}{{ ansible_distribution_major_version }}{{ ansible_hostname }}"
+
     - name: install|rh| enable TLP (for better battery power)
       service:
         name: tlp
