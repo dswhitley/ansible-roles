@@ -1,0 +1,20 @@
+---
+# configuration tasks
+
+- name: config| set fact for future use
+  set_fact:
+    chrome_config_path: "/etc/opt/chrome/policies/managed"
+- name: config| create necessary directory for Kerberos negotiated auth
+  file:
+    path: "{{ chrome_config_path }}"
+    state: directory
+
+- name: config| copy whitelist.json file
+  copy:
+    src: chrome_whitelist.json
+    dest: "{{ chrome_config_path }}/whitelist.json"
+
+- name: config| enable common name fallback
+  copy:
+    src: chrome_EnableCommonNameFallbackForLocalAnchors.json
+    dest: "{{ chrome_config_path }}/EnableCommonNameFallbackForLocalAnchors.json"
