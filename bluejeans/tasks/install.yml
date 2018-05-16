@@ -1,0 +1,27 @@
+---
+# there is no repo so we will install version specified in defaults/main.yml
+
+- name: install| do these tasks for RedHat-y systems
+  block:
+    - name: install|rpm| set some facts for readability
+      set_fact:
+        bluejeans_url: "{{ bluejeans_base_url }}/{{ bluejeans_rpm_major_version }}/{{ bluejeans_rpm_major_version }}.{{ bluejeans_rpm_minor_version }}"
+        bluejeans_rpm: "bluejeans-{{ bluejeans_rpm_major_version }}.{{ bluejeans_rpm_minor_version }}.x86_64.rpm"
+    - name: install|rpm| download bluejeans rpm
+      get_url:
+        url: "{{ bluejeans_url }}/{{ bluejeans_rpm }}"
+        dest: /tmp/
+
+    - name: install|rpm| install the downloaded bluejeans package
+      package:
+        name: "/tmp/{{ bluejeans_rpm }}"
+        state: present
+      register: rpm_install
+  when: ansible_os_family == "RedHat"
+
+- name: install| do these tasks for Ubuntu systems
+  block:
+    - name: install|deb| print support message
+      debug:
+        msg: "BlueJeans is not supported on Ubuntu..."
+  when: ansible_distro == "ubuntu"
