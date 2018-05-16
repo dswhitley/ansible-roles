@@ -10,7 +10,6 @@ gnome_shell_packages:
   - gnome-tweak-tool
 
 misc_install:
-  - fedy
   - gitflow
   - NetworkManager-openvpn
   - NetworkManager-openvpn-gnome
