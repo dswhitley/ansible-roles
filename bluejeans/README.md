@@ -8,7 +8,7 @@ There is not currently a repository for the client installation.  I am also
 unable to decipher what the latest version is.  So unfortunately this role will
 specify a version to install.  (I do not want to keep up with this...)
 
-**NOTE** *bluejeans is 
+**NOTE** *bluejeans is
 [currently not supported](https://support.bluejeans.com/knowledge/bluejeans-app)
  on Ubuntu*
 
@@ -22,7 +22,7 @@ Role Variables
 
 At some point you may be able to specify a version this role will install, but
 currently, it will only install the version specified in
-`<role>/defaults/main.yml` 
+`<role>/defaults/main.yml`
 
 ```yaml
 ...
