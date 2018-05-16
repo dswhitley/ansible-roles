@@ -30,9 +30,3 @@
     state: present
   register: pkg_install
   when: ansible_distro != "ubuntu"
-
-#- name: spideroak | remove the downloaded package
-#  file:
-#    path: "/tmp/{{ spideroak_pkg }}"
-#    state: absent
-#  when: pkg_install is successful
