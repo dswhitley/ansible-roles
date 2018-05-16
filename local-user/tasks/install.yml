@@ -17,10 +17,12 @@
     update_password: on_create
   when: getent_passwd[new_user] == none
 
-- name: install| expire the {{ new_user }} password
-  become: true
-  shell: chage -d 0 "{{ new_user }}"
-  when: getent_passwd[new_user] == none
+# I am removing this because it is cumbersome and because I change the password
+# after initial login anyways, using sudo 
+# - name: install| expire the {{ new_user }} password
+#   become: true
+#   shell: chage -d 0 "{{ new_user }}"
+#   when: getent_passwd[new_user] == none
 
 - name: install| grant {{ new_user }} sudo access
   become: true
