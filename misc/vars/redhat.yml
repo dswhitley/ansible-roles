@@ -1,0 +1,31 @@
+---
+# redhat specific vars file for misc role (fedora and cent report as redhat)
+gnome_shell_packages:
+  - gnome-shell-extension-apps-menu
+  - gnome-shell-extension-common
+  - gnome-shell-extension-drive-menu
+  - gnome-shell-extension-user-theme
+  - gnome-shell-extension-window-list
+  - gnome-shell-extension-workspace-indicator
+  - gnome-tweak-tool
+
+misc_install:
+  - fedy
+  - gitflow
+  - NetworkManager-openvpn
+  - NetworkManager-openvpn-gnome
+  - pidgin
+  - pidgin-otr
+  - screen
+  - tlp
+  - tlp-rdw
+  - virt-manager
+  - vlc
+misc_remove:
+  - evolution
+  - gnome-initial-setup
+  - gnome-maps
+  - rhythmbox
+misc_yum_rpmfusion_repos:
+  - "http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+  - "http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"

@@ -1,0 +1,108 @@
+---
+# this is the install file, but whatever
+
+- name: install| do these tasks for RedHat-y systems
+  block:
+    - name: install|rh| remove "rhgb quiet" from grub
+      replace:
+        dest=/etc/default/grub
+        regexp=" (rhgb|quiet)"
+      register: grubconf
+      tags: grubconf
+    - name: install|rh| generate new grub.cfg
+      command: grub2-mkconfig -o /boot/grub2/grub.cfg
+      when: grubconf.changed
+      tags: grubconf
+
+    # - name: misc | change hostname to {{ new_hostname }}
+    #   hostname:
+    #     name: "{{ new_hostname }}"
+    #   when: new_hostname is defined
+
+    - name: install|rh| add RPMFusion repositories
+      package:
+        name: "{{ item }}"
+        state: installed
+      with_items: "{{ misc_yum_rpmfusion_repos }}"
+      when: misc_yum_rpmfusion_repos is defined
+
+    - name: install|rh| remove unnecessary packages
+      package:
+        name: "{{ item }}"
+        state: absent
+      with_items: "{{ misc_remove }}"
+      when: misc_remove is defined
+      tags: packages
+
+    - name: install|rh| install useful packages that don't fit anywhere else
+      package:
+        name: "{{ item }}"
+        state: latest
+      with_items: "{{ misc_install }}"
+      when: misc_install is defined
+      tags: packages
+
+    - name: install|rh| enable fastestmirror and deltarpm DNF plugins
+      blockinfile:
+        path: /etc/dnf/dnf.conf
+        block: |
+          fastestmirror=true
+          deltarpm=true
+      tags: packages
+
+    - name: install|rh| enable TLP (for better battery power)
+      service:
+        name: tlp
+        state: started
+        enabled: yes
+      tags: battery
+
+# fix fonts?  https://atechnologyjobisnoexcuse.com/2015/07/beautiful-fonts-on-rhel-7/
+
+    - name: install|rh| install helpful gnome-shell extensions
+      package:
+        name: "{{ item }}"
+        state: installed
+      with_items: "{{ gnome_shell_packages }}"
+      when: gnome_shell_packages is defined
+      tags: gnome
+
+    - name: install|rh| create a general dconf user profile
+      copy:
+        content: |
+          user-db:user
+          system-db:local
+        dest: /etc/dconf/profile/user
+      tags: gnome
+
+    - name: install|rh| ensure necessary directory exists
+      file:
+        name: /etc/dconf/db/local.d
+        state: directory
+        recurse: yes
+      tags: gnome
+
+    - name: install|rh| set some global default gnome configs via file
+      copy:
+        src: files/gnome_00-gnome-settings
+        dest: /etc/dconf/db/local.d/00-gnome-settings
+      tags: gnome
+
+    - name: install|rh| update the system databases
+      command: dconf update
+      tags: gnome
+
+
+    - name: install|rh| update all installed packages
+      package:
+        name: "*"
+        state: latest
+      tags: packages
+  when: ansible_os_family == "RedHat"
+
+- name: install| do these tasks for Ubuntu systems
+  block:
+    - name: install|deb| output
+      debug:
+        msg: "here is a placeholder for ubuntu tasks"
+  when: ansible_distro == "ubuntu"

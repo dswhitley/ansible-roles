@@ -1,0 +1,99 @@
+# Gnome configs
+#
+
+## set the default background
+#[org/gnome/desktop/background]
+#picture-uri='file:///usr/share/backgrounds/corporate-engraved.xml'
+
+## set the default background
+#[org/gnome/desktop/screensaver]
+#picture-uri='file:///usr/share/backgrounds/corporate-engraved.xml'
+
+## show date and seconds in the Systray
+[org/gnome/desktop/interface]
+clock-show-date=true
+clock-show-seconds=true
+
+## show weekdays in the calendar
+[org/gnome/shell/calendar]
+show-weekdate=true
+
+## set blank screen to 10 minutes (not working right now)
+[org/gnome/desktop/session]
+idle-delay=uint32 600
+
+## lock screen when the screensaver activates and set lock timeout to 0 seconds after the screensaver has been activated
+[org/gnome/desktop/screensaver]
+lock-enabled=true
+lock-delay=uint32 0
+
+## change screensaver key from 'Super'+L to '<Control><Alt>l'
+[org/gnome/settings-daemon/plugins/media-keys]
+screensaver='<Control><Alt>l'
+
+## Enable mouse clicks with touchpad
+[org/gnome/settings-daemon/peripherals/touchpad]
+tap-to-click=true
+
+## set fonts for the Desktop
+[org/gnome/desktop/interface]
+font-name='Cantarell 10'
+monospace-font-name='Monospace 10'
+
+[org/gnome/desktop/wm/preferences]
+titlebar-font='Cantarell 10'
+
+## List Red Hat Internal as folder in Application view
+[org/gnome/shell]
+app-folder-categories=['Utilities', 'Sundry', 'Red Hat Internal', 'Office', 'Internet', 'Accessories', 'System', 'Multimedia', 'Graphics', 'Documentation']
+
+## enable lockkeys
+[org/gnome/shell]
+enabled-extensions=['apps-menu@gnome-shell-extensions.gcampax.github.com', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'lockkeys@vaina.lt', 'user-theme@gnome-shell-extensions.gcampax.github.com', 'window-list@gnome-shell-extensions.gcampax.github.com', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com']
+
+## sets QEMU as default connect for virt-manager
+[org/virt-manager/virt-manager/connections]
+autoconnect=['qemu:///system']
+uris=['qemu:///system']
+
+## Set Modifier to use for modified window click actions
+[org/gnome/desktop/wm/preferences]
+mouse-button-modifier="<Alt>"
+
+## disable notification for ABRT (ABRT reports are still send)
+[org/gnome/desktop/notifications/application/abrt-applet]
+enable=false
+enable-sound-alerts=false
+show-banners=false
+show-in-lock-screen=false
+
+## ensable notification for Gnome Software
+[org/gnome/desktop/notifications/application/org-gnome-software]
+enable=true
+#enable-sound-alerts=false
+show-banners=true
+#show-in-lock-screen=false
+
+## enable automatic timezone detection
+[org/gnome/desktop/datetime]
+automatic-timezone=true
+
+## enable download-updates (disables notification during post install for new updates)
+[org/gnome/software]
+download-updates=true
+
+## enable sort-directories-first
+[org/gtk/Settings/FileChooser]
+sort-directories-first=true
+
+## got feedback from Ashley Azzopardi to enable the beep again 2016-05-06
+### disable bell-mode
+#[org/gnome/settings-daemon/peripherals/keyboard]
+#bell-mode=false
+
+#[org/gnome/desktop/wm/preferences]
+#audible-bell=false
+
+## Disable touchpad while typing
+[org/gnome/settings-daemon/peripherals/touchpad]
+disable-while-typing=true
