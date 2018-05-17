@@ -1,0 +1,25 @@
+---
+- name: Converge
+  hosts: all
+  pre_tasks:
+  - name: create test users
+    become: yes
+    user:
+      name: '{{ item }}'
+      state: present
+      home: '/home/{{ item }}'
+      createhome: yes
+    with_items:
+      - test_usr1
+      - test_usr2
+      - test_usr3
+  roles:
+    - role: hexchat
+      users:
+        - username: test_usr2
+          irc_nick: testUser2
+          servers:
+            - usr.2.com/6667
+          channels:
+            - noob
+        - username: test_usr3

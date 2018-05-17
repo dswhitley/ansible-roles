@@ -1,0 +1,9 @@
+v=2.14.1
+
+N={{ item.username }}-servers
+E=UTF-8 (Unicode)
+F=19
+D=2
+{% for server in item.servers %}
+S={{ server }}
+{% endfor %}

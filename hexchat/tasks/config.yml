@@ -1,0 +1,32 @@
+---
+# apply some pretty generic configurations
+
+- name: config| create config directories for users
+  become: yes
+  file:
+    path: "~{{ item.username }}/.config/hexchat"
+    state: directory
+    owner: "{{ item.username }}"
+    group: "{{ item.username }}"
+    mode: 'u=rwx,go=r'
+  with_items:
+    - "{{ users }}"
+  when: item.username is defined
+
+- name: config| write a server file if specified
+  template:
+    src: servlist.conf.j2
+    dest: "~{{ item.username }}/.config/hexchat/servlist.conf"
+    backup: true
+  with_items: "{{ users }}"
+  when: item.username is defined and
+        item.servers is defined
+
+- name: config| write a config file if irc_nick is specified
+  template:
+    src: hexchat.conf.j2
+    dest: "~{{ item.username }}/.config/hexchat/hexchat.conf"
+    backup: true
+  with_items: "{{ users }}"
+  when: item.username is defined and
+        item.irc_nick is defined
