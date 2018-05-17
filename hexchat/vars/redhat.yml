@@ -1,3 +1,0 @@
----
-# redhat specific vars file for spideroak role (fedora and cent report as redhat)
-spideroak_pkg_extension: "rpm"

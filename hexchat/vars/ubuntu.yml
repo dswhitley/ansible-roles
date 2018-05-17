@@ -1,3 +1,0 @@
----
-# ubuntu specific vars file for spideroak role
-spideroak_pkg_extension: "deb"
