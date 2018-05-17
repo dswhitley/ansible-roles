@@ -1,0 +1,10 @@
+{
+    'atleast': {
+        'selected': ['$HOME/Documents', '$HOME/BACKUP',],
+        'deselected': ['$HOME/.xsession*', '$HOME/.Trash', '$HOME/.local/share/Trash']
+    },
+    'atsetup': {
+        'selected': ['$HOME'],
+        'deselected': ['$HOME/.mozilla/firefox/HelpDesk.default/Cache']
+    }
+}

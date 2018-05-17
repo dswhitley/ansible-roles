@@ -1,0 +1,18 @@
+---
+# hexchat is available in repositories but Cent and RHEL need EPEL
+
+- name: do these tasks for Red Hat or CentOS systems
+  block:
+    - name: install|rpm| configure EPEL for RHEL and Cent
+      become: true
+      package:
+        name: epel-release
+        state: present
+  when: ansible_distro == "redhat" or
+        ansible_distro == "centos"
+
+- name: install| install hexchat from repo
+  become: true
+  package:
+    name: hexchat
+    state: present
