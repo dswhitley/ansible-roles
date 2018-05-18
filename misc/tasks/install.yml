@@ -52,7 +52,7 @@
 
     - name: install|rh| change hostname
       hostname:
-        name: "{{ ansible_distro }}{{ ansible_distribution_major_version }}{{ ansible_hostname }}"
+        name: "{{ ansible_distro }}{{ ansible_distribution_major_version }}{{ inventory_hostname_short }}"
 
     - name: install|rh| enable TLP (for better battery power)
       service:
